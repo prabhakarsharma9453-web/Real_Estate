@@ -16,10 +16,11 @@ const PropertyCard = ({ property }: PropertyCardProps) => (
   >
     <div className="relative overflow-hidden aspect-[4/3]">
       <img
-        src={imgUrl(property.images[0])}
+        src={imgUrl(property.images[0]) || property.images[0]}
         alt={property.title}
         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         loading="lazy"
+        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
       />
       <Badge className="absolute top-3 left-3 capitalize">{property.type}</Badge>
       <div className="absolute bottom-3 right-3 bg-primary text-primary-foreground font-bold text-sm px-3 py-1 rounded-md">

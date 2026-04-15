@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+const BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "" : "http://localhost:5000/api");
 
 // ─── Token storage (memory > localStorage for access tokens) ─────────────────
 // Access tokens are kept in memory — not persisted to localStorage
@@ -43,6 +43,9 @@ async function request(
   role: "admin" | "user" | "none" = "none",
   retry = true
 ): Promise<unknown> {
+  // No backend configured — fail silently so fallback data is used
+  if (!BASE_URL) throw new Error("No backend configured");
+
   const token = role === "admin" ? adminAccessToken : role === "user" ? userAccessToken : null;
   const headers: Record<string, string> = {};
 
